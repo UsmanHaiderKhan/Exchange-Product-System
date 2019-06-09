@@ -1,0 +1,73 @@
+﻿@using EPSClassLibrary.ProductMgmt
+@{
+    ViewBag.Title = "Home Page";
+    List<Product> products = ViewBag.recomProds;
+}
+<div id="demo" class="carousel slide" data-ride="carousel">
+    <ul class="carousel-indicators">
+        <li data-target="#demo" data-slide-to="0" class="active"></li>
+        <li data-target="#demo" data-slide-to="1"></li>
+        <li data-target="#demo" data-slide-to="2"></li>
+    </ul>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="~/Content/img/grzegorz-walczak-494248-unsplash.jpg" style="width: 100%; height: 600px;" />
+            <div class="carousel-caption">
+                <h2 class="text-white">Electronics Products</h2>
+                <p>We had such a great time in LA!</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="~/Content/img/rodion-kutsaev-184298-unsplash.jpg" style="width: 100%; height: 600px;" />
+
+            <div class="carousel-caption">
+                <h2 class="text-white">Exchangeable Mobiles</h2>
+                <p>Thank you, Chicago!</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="~/Content/img/daniel-korpai-1156463-unsplash.jpg" style="width: 100%; height: 600px;" />
+            <div class="carousel-caption">
+                <h2 class="text-white">Exchangeable Laptops </h2>
+                <p>We love the Big Apple!</p>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#demo" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </a>
+    <a class="carousel-control-next" href="#demo" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </a>
+</div>
+<div class="jumbotron-fluid mt-4">
+    <h3>Recommended Products Around You</h3>
+    <div class="row justify-content-center">
+        @foreach (var prod in products)
+        {
+            <div class="col-auto mb-4">
+                <a class="card-link" href="@Url.Action("ProductDetail","Product",new { Id = prod.Id})">
+                    <div class="card border-primary">
+                        <img src="@prod.Images.First().Image_Url" class="card-img-top" alt="Ad Image" />
+                        <div class="card-img-overlay"><h5 class="bg-blur text-white mb-3">Price-Range: @prod.MinPrice - @prod.MaxPrice</h5></div>
+                        <div class="card-body">
+                            <h5 class="card-title">@prod.Name</h5>
+                            @if (prod.Description.Length >= 50)
+                            {
+                                <p class="card-text">@prod.Description.Substring(0, 49)</p>
+                            }
+                            else
+                            {
+
+                                <p class="card-text">@prod.Description</p>
+                            }
+
+                            <p class="card-text float-left city-name"><small class="text-muted">@prod.User.CityId.Name</small></p>
+                            <p class="card-text float-right"><small class="text-muted">@prod.DateAdded</small></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>

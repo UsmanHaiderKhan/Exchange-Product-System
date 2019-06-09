@@ -1,0 +1,411 @@
+﻿@using EPSClassLibrary.ProductMgmt
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="~/myicon.ico" type="image/x-icon" />
+    <title>@ViewBag.Title - EPS</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/imagepreviewer.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css" rel="stylesheet" />
+    @RenderSection("Styles", false)
+    <style type="text/css">
+
+
+
+
+
+
+
+        .card img {
+            object-fit: none;
+            object-position: center;
+            max-width: 300px;
+            max-height: 300px;
+        }
+
+        .card {
+            width: 300px;
+        }
+
+        .card-img-overlay {
+            /*margin-top: 50%;*/
+            padding: 0px;
+            /*margin-bottom: 10%;*/
+            position: relative;
+            /*top: -50px;
+                            bottom: -17px;*/
+        }
+
+        .bg-blur {
+            background-color: rgba(0,0,0, 0.4);
+            padding: 10px;
+        }
+
+        .city-name {
+            margin-bottom: 0px;
+        }
+
+        .item-image-thumb {
+            max-width: 75px;
+            height: 50px;
+            border-width: 1px !important;
+        }
+
+        .item-image-thumb-active {
+            max-width: 75px;
+            height: 50px;
+            border-width: 3px !important;
+        }
+
+        .item-image-view-screen {
+            width: 100%;
+            height: 50%;
+            /*overflow: hidden;*/
+            background-color: rgba(0,0,0, 0.1);
+        }
+
+            .item-image-view-screen img {
+                width: 100%;
+                height: 100%;
+            }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            padding: 8px;
+        }
+
+        .info-btn {
+            width: 20px;
+            height: 20px;
+            padding: 3px;
+        }
+
+        .nav-bg-color {
+            background: #01103e;
+        }
+
+        /*.navbar {
+            padding: 36px 10px 10px 10px;
+            border: none;
+            border-radius: 0;
+             margin-bottom: 40px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }*/
+
+        .navbar-btn {
+            width: 20px;
+            position: absolute !important;
+            box-shadow: none;
+            outline: none !important;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            left: 0;
+            top: 69px;
+        }
+
+        #sidebar {
+            width: 278px;
+            position: fixed;
+            top: 0;
+            left: -280px;
+            height: 100vh;
+            z-index: 999999;
+            background: #78C2AD;
+            color: #fff;
+            transition: all 0.3s;
+            overflow-y: hidden;
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
+        }
+
+            #sidebar.active {
+                left: 0;
+            }
+
+        #dismiss {
+            width: 50px;
+            height: 50px;
+            line-height: 45px;
+            text-align: center;
+            background: #060a21;
+            position: absolute;
+            bottom: 60px;
+            left: 40%;
+            cursor: pointer;
+            -webkit-transition: all 0.3s;
+            -o-transition: all 0.3s;
+            transition: all 0.3s;
+            z-index: 9999999999;
+            border: 2px solid #78C2AD;
+            border-radius: 50%;
+        }
+
+            #dismiss:hover {
+                background: #fff;
+                color: #7386D5;
+            }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 998;
+            opacity: 0;
+            transition: all 0.5s ease-in-out;
+        }
+
+            .overlay.active {
+                display: block;
+                opacity: 1;
+            }
+
+        #sidebar .sidebar-header {
+            padding: 75px;
+            background: #78C2AD;
+        }
+
+        #sidebar ul.components {
+            padding: 0px 80px;
+        }
+
+        #sidebar ul p {
+            color: #fff;
+            padding: 10px;
+        }
+
+        #sidebar ul li a {
+            padding: 10px;
+            font-size: 1.1em;
+            display: block;
+        }
+
+            #sidebar ul li a:hover {
+                color: #78C2AD;
+                background: #fff;
+            }
+
+        #sidebar ul li.active > a, a[aria-expanded="true"] {
+            color: #fff;
+            background: #333333;
+        }
+
+        a[data-toggle="collapse"] {
+            position: relative;
+        }
+
+        .dropdown-toggle::after {
+            display: block;
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+        }
+
+        ul ul a {
+            font-size: 0.9em !important;
+            padding-left: 30px !important;
+            background: #78C2AD;
+        }
+
+        ul.CTAs {
+            padding: 20px;
+        }
+
+            ul.CTAs a {
+                text-align: center;
+                font-size: 0.9em !important;
+                display: block;
+                border-radius: 5px;
+                margin-bottom: 5px;
+            }
+
+        #sidebarCollapse #one {
+            width: 38px;
+            height: 3px;
+            margin: 0px 50px;
+            display: block;
+            background: #78C2AD;
+            transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375);
+            transition-delay: 0.2s;
+        }
+
+        #sidebarCollapse #two {
+            width: 32px;
+            height: 3px;
+            margin: 10px 55px;
+            display: block;
+            background: #78C2AD;
+            transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375);
+            transition-delay: 0.2s;
+        }
+
+        #sidebarCollapse #three {
+            width: 38px;
+            height: 3px;
+            margin: 10px 50px;
+            display: block;
+            background: #78C2AD;
+            transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375);
+            transition-delay: 0.2s;
+        }
+
+        /* #sidebarCollapse span:first-of-type {
+            transform: rotate(53deg) translate(21px, 16px);
+        }
+        #sidebarCollapse span:nth-of-type(2) {
+            opacity: 0;
+        }
+        #sidebarCollapse span:last-of-type {
+            transform: rotate(-45deg) translate(1px, -1px);
+        }
+
+
+        #sidebarCollapse.active span {
+            transform: none;
+            opacity: 1;
+            margin: 5px auto;
+        } */
+
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+            a:hover {
+                text-decoration: none;
+                color: #fff;
+            }
+
+        /* ---------------------------------------------------
+            CONTENT STYLE
+        ----------------------------------------------------- */
+
+        #content {
+            width: 100%;
+            padding: 0px;
+            min-height: 100vh;
+            transition: all 0.3s;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+
+        /*--------- End Side bar style---------*/
+    </style>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <img src="~/Content/img/LOGO.png" class="img-fluid" />
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    $('.list-unstyled li a').on('click',
+                        function () {
+                            $('.list-unstyled li a').removeClass('active');
+                            $(this).addClass('active');
+                        });
+                });
+            </script>
+            @{
+                List<Category> categories = new ProductHandler().GetCategories();
+            }
+
+            <ul class="list-unstyled components">
+                @foreach (var v in categories)
+                {
+                    <li class="">
+                        <a href="#">@v.Name</a>
+                    </li>
+                }
+
+            </ul>
+            <div id="dismiss">
+                <i class="fa fa-arrow-left"></i>
+            </div>
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content">
+
+            <nav class="navbar navbar-expand-lg fixed-top">
+                <div class="container">
+                    <div id="sidebarCollapse" class="navbar-btn position-relative">
+                        <span id="one"></span>
+                        <span id="two"></span>
+                        <span id="three"></span>
+                    </div>
+
+                </div>
+            </nav>
+            <div style="margin-top: 5rem;">
+                @Html.Partial("_NavBar")
+            </div>
+
+            <div class="container body-content">
+                @RenderBody()
+                <hr />
+                <footer>
+                    <p>&copy; @DateTime.Now.Year - EPS</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay"></div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/popperbundle")
+    @RenderSection("Scripts", required: false)
+
+    <script type="text/javascript">
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+            $('#dismiss, .overlay,.navbar-btn').on('click', function () {
+                $('#sidebar').removeClass('active');
+                $('.overlay').removeClass('active');
+            });
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').addClass('active');
+                $('.overlay').addClass('active');
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+        });
+
+
+
+        $("#info-btn-popover").popover();
+        GetConvoConut();
+        setInterval(() => { GetConvoConut() }, 10000);
+
+        function GetConvoConut() {
+            $.ajax({
+                url: "/User/ConversationCount/",
+                type: "GET",
+                success: (result) => {
+                    $("#convoCount").text(result);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
